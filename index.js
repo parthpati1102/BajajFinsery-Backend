@@ -1,11 +1,38 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const { detectPrimes, splitData } = require("./utils/helpers");
-
+const cors = require("cors");
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
+
+// Helpers
+const splitData = (data) => {
+  const numbers = [];
+  const alphabets = [];
+  let highestLowercase = null;
+
+  data.forEach((item) => {
+    if (!isNaN(item)) {
+      numbers.push(parseInt(item));
+    } else if (typeof item === "string") {
+      alphabets.push(item);
+      if (item === item.toLowerCase()) {
+        if (!highestLowercase || item > highestLowercase) {
+          highestLowercase = item;
+        }
+      }
+    }
+  });
+
+  return { numbers, alphabets, highestLowercase };
+};
 
 // Middleware
+app.use(cors());
+
+app.use(cors({
+  origin: 'http://localhost:3000'  // Adjust this to match your frontend's URL and port
+}));
+
 app.use(bodyParser.json());
 
 // POST Route for handling input
@@ -43,6 +70,6 @@ app.get("/bfhl", (req, res) => {
 });
 
 // Start the server
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
