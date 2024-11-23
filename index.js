@@ -30,7 +30,7 @@ const splitData = (data) => {
 app.use(cors());
 
 app.use(cors({
-  origin: 'http://localhost:3000'  // Adjust this to match your frontend's URL and port
+  origin: 'https://bajajfinsery-frontend.onrender.com'  // Adjust this to match your frontend's URL and port
 }));
 
 app.use(bodyParser.json());
